@@ -3,6 +3,7 @@ import json
 import os
 import math
 import librosa
+import numpy as np
 
 from params import DATASET_TRAIN_PATH, JSON_TRAIN_PATH, SAMPLE_RATE, SAMPLES_PER_TRACK, num_mfcc, n_fft, hop_length, num_segments
 
@@ -45,6 +46,16 @@ def save_mfcc(dataset_path, json_path, num_mfcc, n_fft, hop_length, num_segments
                 # load audio file
                 file_path = os.path.join(dirpath, f)
                 signal, sample_rate = librosa.load(file_path, sr=SAMPLE_RATE)
+
+                # normalize signal
+                signal = librosa.util.normalize(signal)
+
+                # force 5 seconds of audio
+                desired_length = 5 * sample_rate  # 5 seconds
+                if len(signal) < desired_length:
+                    signal = np.pad(signal, (0, desired_length - len(signal)), mode='constant')
+                elif len(signal) > desired_length:
+                    signal = signal[:desired_length]
 
                 # process all segments of audio file
                 for d in range(num_segments):

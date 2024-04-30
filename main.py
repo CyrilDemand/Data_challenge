@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 import tensorflow.keras as keras
 import matplotlib.pyplot as plt
 
+
 from params import JSON_TRAIN_PATH, checkpoint_path
 
 def load_data(data_path):
@@ -98,14 +99,14 @@ def build_model(input_shape):
     model.add(keras.layers.BatchNormalization())
 
     # # 2nd conv layer
-    # model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
-    # model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
-    # model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
+    model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
+    model.add(keras.layers.BatchNormalization())
 
     # # 3rd conv layer
-    # model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
-    # model.add(keras.layers.MaxPooling2D((2, 2), strides=(2, 2), padding='same'))
-    # model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
+    model.add(keras.layers.MaxPooling2D((2, 2), strides=(2, 2), padding='same'))
+    model.add(keras.layers.BatchNormalization())
 
     # flatten output and feed it into dense layer
     model.add(keras.layers.Flatten())
@@ -160,7 +161,7 @@ if __name__ == "__main__":
     cp_callback = keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,save_weights_only=True,verbose=1)
 
     # train model
-    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=128, epochs=10, callbacks=[cp_callback])
+    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=128, epochs=100, callbacks=[cp_callback])
 
     # plot accuracy/error for training and validation
     plot_history(history)
