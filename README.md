@@ -23,6 +23,9 @@
 - on tente des tailles différentes pour les couches de convolutions(0.3 accuracy)
 - num_mfcc : 128 > 13 > 50 & sample_rate : 10000 > 22050 > 44100 > 96000 > 22050
   (accuracy à 0.65, let's goooo)
+- on ajoutes des datas en plus dans le json (0.54 => on a probablement pas fait assez d'epochs)
+- Adam > RMSprop
+  (accuracy à 0.60, moins bon)
 
 A TESTER : 
 renamme poids avec date génération pour pouvoir comparer les résultats
