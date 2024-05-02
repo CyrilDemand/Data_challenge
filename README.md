@@ -19,6 +19,10 @@
   (0.45 : c'est mieux, mais pas de plateau dans le graphe)
 - on tente d'augmenter le lr 0.0001 > 0.00025, toujour sur 100 epochs
   (0.52 : encore mieux !)
+- on tente un lstm : aucun résultat satisfaisant (0.3 accuracy)
+- on tente des tailles différentes pour les couches de convolutions(0.3 accuracy)
+- num_mfcc : 128 > 13 > 50 & sample_rate : 10000 > 22050 > 44100 > 96000 > 22050
+  (accuracy à 0.65, let's goooo)
 
 A TESTER : 
 renamme poids avec date génération pour pouvoir comparer les résultats
