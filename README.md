@@ -26,6 +26,7 @@
 - on ajoutes des datas en plus dans le json (0.54 => on a probablement pas fait assez d'epochs)
 - Adam > RMSprop
   (accuracy à 0.60, moins bon)
+- énormement augmenté la taille du CNN (même accuracy)
 
 A TESTER : 
 renamme poids avec date génération pour pouvoir comparer les résultats
