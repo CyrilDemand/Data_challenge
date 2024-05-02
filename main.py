@@ -83,7 +83,7 @@ def prepare_datasets(test_size, validation_size):
     return X_train, X_validation, X_test, y_train, y_validation, y_test
 
 
-def build_model(input_shape):
+def build_old_model(input_shape):
     """Generates CNN model
 
     :param input_shape (tuple): Shape of input set
@@ -119,6 +119,32 @@ def build_model(input_shape):
     return model
 
 
+def build_model(input_shape):
+    model = keras.Sequential()
+
+    # Enhanced model with deeper layers and more filters
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same', input_shape=input_shape))
+    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', padding='same'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.BatchNormalization())
+
+    model.add(keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(keras.layers.Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.BatchNormalization())
+
+    model.add(keras.layers.Conv2D(128, (3, 3), activation='relu', padding='same'))
+    model.add(keras.layers.MaxPooling2D((2, 2)))
+    model.add(keras.layers.BatchNormalization())
+
+    model.add(keras.layers.GlobalAveragePooling2D())
+    model.add(keras.layers.Dense(128, activation='relu'))
+    model.add(keras.layers.Dropout(0.5))
+    model.add(keras.layers.Dense(50, activation='softmax'))
+
+    return model
+
+
 def predict(model, X, y):
     """Predict a single sample using the trained model
 
@@ -149,7 +175,7 @@ if __name__ == "__main__":
     model = build_model(input_shape)
 
     # compile model
-    optimiser = keras.optimizers.Adam(learning_rate=0.0001)
+    optimiser = keras.optimizers.Adam(learning_rate=0.00025)
     model.compile(optimizer=optimiser,
                   loss='sparse_categorical_crossentropy',
                   metrics=['accuracy'])

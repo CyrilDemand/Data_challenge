@@ -15,6 +15,10 @@
 (0.30 accuracy, guez)
 - epochs 50 > 100 + force audio a 5sec
 (0.34 accuracy, encore guez)
+- nouvelle structure du réseau, ajout de couches (plus de couches de convolutions, BatchNormalization, GlobalAveragePooling2D et dense layers à la fin)
+  (0.45 : c'est mieux, mais pas de plateau dans le graphe)
+- on tente d'augmenter le lr 0.0001 > 0.00025, toujour sur 100 epochs
+  (0.52 : encore mieux !)
 
 A TESTER : 
 renamme poids avec date génération pour pouvoir comparer les résultats
