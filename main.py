@@ -151,7 +151,7 @@ if __name__ == "__main__":
     cp_callback = keras.callbacks.ModelCheckpoint(filepath=checkpoint_path,save_weights_only=True,verbose=1)
 
     # train model
-    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=128, epochs=100, callbacks=[cp_callback])
+    history = model.fit(X_train, y_train, validation_data=(X_validation, y_validation), batch_size=256, epochs=100, callbacks=[cp_callback])
 
     # plot accuracy/error for training and validation
     plot_history(history)

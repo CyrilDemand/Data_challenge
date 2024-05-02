@@ -27,6 +27,8 @@
 - Adam > RMSprop
   (accuracy à 0.60, moins bon)
 - énormement augmenté la taille du CNN (même accuracy)
+- changement batchsize (256 > 512 > 128 > 64) : pire (0.3)
+- 
 
 A TESTER : 
 renamme poids avec date génération pour pouvoir comparer les résultats
