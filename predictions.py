@@ -23,7 +23,8 @@ def save_mfcc(dataset_path, json_path, num_mfcc, n_fft, hop_length, num_segments
 
     # dictionary to store mapping, labels, and MFCCs
     data = {
-        "mfcc": []
+        "mfcc": [],
+        "spectrogram": []
     }
 
     samples_per_segment = int(SAMPLES_PER_TRACK / num_segments)
@@ -37,17 +38,19 @@ def save_mfcc(dataset_path, json_path, num_mfcc, n_fft, hop_length, num_segments
         # process all segments of audio file
         for d in range(num_segments):
 
-            # calculate start and finish sample for current segment
+            # Calculate start and finish sample for current segment
             start = samples_per_segment * d
             finish = start + samples_per_segment
-
-            # extract mfcc
+            # Extract MFCCs
             mfcc = librosa.feature.mfcc(y=signal[start:finish], sr=sample_rate, n_mfcc=num_mfcc, n_fft=n_fft, hop_length=hop_length)
             mfcc = mfcc.T
-
-            # store only mfcc feature with expected number of vectors
+            # Extract spectrogram with smaller resolution
+            spectrogram = librosa.amplitude_to_db(librosa.stft(signal[start:finish], n_fft=n_fft//64, hop_length=hop_length), ref=np.max)
+            spectrogram = spectrogram.T
+            # Store only MFCCs and spectrograms with expected number of vectors
             if len(mfcc) == num_mfcc_vectors_per_segment:
                 data["mfcc"].append(mfcc.tolist())
+                data["spectrogram"].append(spectrogram.tolist())
 
     # save MFCCs to json file
     with open(json_path, "w") as fp:
@@ -63,9 +66,10 @@ def load_data(data_path):
     with open(data_path, "r") as fp:
         data = json.load(fp)
 
-    X = np.array(data["mfcc"])
+    X_mfcc = np.array(data["mfcc"])
+    X_spectrogram = np.array(data["spectrogram"])
 
-    print(X.shape)
+    X = np.concatenate((X_mfcc, X_spectrogram), axis=2)
 
     return X
 

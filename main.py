@@ -19,7 +19,11 @@ def load_data(data_path):
     with open(data_path, "r") as fp:
         data = json.load(fp)
 
-    X = np.array(data["mfcc"])
+    X_mfcc = np.array(data["mfcc"])
+    X_spectrogram = np.array(data["spectrogram"])
+
+    X = np.concatenate((X_mfcc, X_spectrogram), axis=2)
+
     y = np.array(data["labels"])
 
     print(X.shape)
@@ -81,42 +85,6 @@ def prepare_datasets(test_size, validation_size):
     X_test = X_test[..., np.newaxis]
 
     return X_train, X_validation, X_test, y_train, y_validation, y_test
-
-
-def build_old_model(input_shape):
-    """Generates CNN model
-
-    :param input_shape (tuple): Shape of input set
-    :return model: CNN model
-    """
-
-    # build network topology
-    model = keras.Sequential()
-
-    # 1st conv layer
-    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape))
-    model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
-    model.add(keras.layers.BatchNormalization())
-
-    # # 2nd conv layer
-    model.add(keras.layers.Conv2D(32, (3, 3), activation='relu'))
-    model.add(keras.layers.MaxPooling2D((3, 3), strides=(2, 2), padding='same'))
-    model.add(keras.layers.BatchNormalization())
-
-    # # 3rd conv layer
-    model.add(keras.layers.Conv2D(32, (2, 2), activation='relu'))
-    model.add(keras.layers.MaxPooling2D((2, 2), strides=(2, 2), padding='same'))
-    model.add(keras.layers.BatchNormalization())
-
-    # flatten output and feed it into dense layer
-    model.add(keras.layers.Flatten())
-    model.add(keras.layers.Dense(64, activation='relu'))
-    model.add(keras.layers.Dropout(0.3))
-
-    # output layer
-    model.add(keras.layers.Dense(50, activation='softmax'))
-
-    return model
 
 
 def build_model(input_shape):
